@@ -26,6 +26,8 @@
     </style>
   </head>
   <body>
+    <h1>当前用户:<%=uname%></h1>
+    <a href="/logout">登出</a>
     <% if(arrs&&arrs.length>0){%>
     <table>
       <caption>
@@ -52,10 +54,10 @@
           <td>
             <a
               onclick="return confirm('确认删除嘛')"
-              href="/delete?id=<%=i.id%>"
+              href="/students/delete?id=<%=i.id%>"
               >删除</a
             >
-            <a href="/to-update?id=<%=i.id%>">操作</a>
+            <a href="/students/to-update?id=<%=i.id%>">操作</a>
           </td>
         </tr>
         <% } %>
@@ -64,7 +66,8 @@
     <%}else { %>
     <h1>学生列表为空!</h1>
     <%}%>
-    <form action="/add-student" method="post">
+    <form action="/students/add" method="post">
+      <input type="text" name="_csrf" value="<%=csrfToken %>" />
       <div>姓名:<input type="text" name="name" id="" /></div>
       <div>年龄:<input type="text" name="age" id="" /></div>
       <div>

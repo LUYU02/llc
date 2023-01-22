@@ -73,7 +73,7 @@ app.post("/update-student", (req, res) => {
   // 根据学生id获取学生对象
   const user = arrs.find((i) => i.id === +id)
 
-  user.name === name
+  user.name = name
   user.age = +age
   user.gender = gender
   user.address = address
