@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            浅拷贝复制第一层 深拷贝全部复制
+
+            比如
+                const arr= [{name:"孙悟空"},{name:"猪八戒"}]
+                浅拷贝:
+                    复制了这个数组的内存地址值 没有复制第二层对象的内存地址值
+                深拷贝:
+                    不管有几层都会复制过来
+                    一般不会用深拷贝 这个性能会差
+                    structuredClone() 深拷贝的方法
+         */
+        const arr = [{ name: "孙悟空" }, { name: "猪八戒" }]
+        let arr2 = structuredClone(arr)
+        console.log(arr);
+        arr[0].name = "唐僧"
+        console.log(arr2);
+        console.log(arr[0].name, arr2[0].name);
+        /* 
+            ...(展开运算符)
+            可以将一个数组中的元素展开到另一个数组中或者作为函数的参数传递
+            通过它也可以对数组进行浅复制
+        */
+
+        /*
+            对象的复制
+            Object.assign(目标对象,被复制对象) 浅拷贝
+            同一属性 后者会覆盖前者
+
+            展开运算符进行浅拷贝const obj2={...obj}
+
+        */
+        const obj = { name: "孙悟空", age: 20 }
+        // const obj2 = Object.assign({}, obj)
+        const obj2 = { ...obj }
+
+    </script>
+</body>
+
+</html>

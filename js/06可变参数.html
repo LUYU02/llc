@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*可变参数
+             名字可=可以自己随便定义
+             是一个数组
+             配合其他参数一起使用 */
+        function fu(a, b, ...z12) {
+            let sum = 0
+            z12.forEach(a => console.log(a))
+            console.log(a, b, z12)//真数组
+            for (let i = 0; i < z12.length; i++) {
+                sum += z12[i]
+            }
+            return sum
+        }
+        /* function fu() {
+            let sum = 0
+            for (let i = 0; i < arguments.length; i++) {
+                sum += arguments[i] //伪数组
+            }
+            return sum
+        } */
+        const sum = fu(1, 2, 3, 4, 98, 40)
+        console.log(sum);
+
+        console.log("----------------------");
+        function fu1(a, b, c) {
+            console.log("fu1执行啦", this.name);
+            console.log(a, b, c);
+        }
+        const obj = { name: "孙悟空", age: 20 }
+        const newFu = fu1.bind(obj, 10)
+        fu1(1, 2, 3)
+        newFu(4, 5, 6)
+        console.log("----------------------");
+        const obj1 = { name: "孙悟空", age: 20, luyu: 123 }
+        let name, age, luyu
+        ({ name, age, luyu } = obj1)
+        let { name: a, age: b, ly = "小江" } = obj
+        console.log(name, age, luyu);
+        console.log(a, b, ly);
+        const str = JSON.stringify(obj1)
+        console.log(obj1);
+        console.log(str);
+        const obj2 = JSON.parse(str)
+        console.log(obj2);
+        console.log(obj1 === obj2);
+        const str2 = '{"name":"小江","age":20}'
+        const obj3 = JSON.parse(str2)
+        console.log(obj3, typeof obj3);
+        console.log("----------------------");
+        const arr5 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "nihao"]
+        console.log(JSON.stringify(arr5));
+    </script>
+</body>
+
+</html>

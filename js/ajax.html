@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <style>
+      #angel {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        background-color: #bfa;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="angel">1</div>
+    <script>
+      $(function () {
+        var angel = $("#angel")
+        var timer = null // 1.预定义一个 timer 节流阀
+        $(document).on("mousemove", function (e) {
+          if (timer) return
+          // 3.判断节流阀是否为空，如果不为空，则证明距离上次执行间隔不足16毫秒
+          timer = setTimeout(function () {
+            $(angel)
+              .css("left", e.pageX - 25 + "px")
+              .css("top", e.pageY - 25 + "px")
+            timer = null // 2.当设置了鼠标跟随效果后，清空 timer 节流阀，方便下次开启延时器
+          }, 16)
+        })
+      })
+
+      //   $.get("http://www.liulongbin.top:3006/api/cmtlist", function (a, b, c) {
+      //     console.log(a)
+      //     console.log(a.data)
+
+      //     console.log(b)
+      //     console.log(c)
+      //   })
+
+      //   get请求
+      var xhr = new XMLHttpRequest()
+      xhr.open("GET", "http://www.liulongbin.top:3006/api/getbooks", true)
+
+      xhr.onload = function () {
+        // onload 事件
+        // 请求结束后，在此处写处理代码
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          // 4.2 打印服务器响应回来的数据
+          console.log(xhr.responseText)
+          const data = JSON.parse(xhr.responseText).data
+          console.log(data)
+          data.forEach((a, b, c) => {
+            console.log("书名---->", a.bookname)
+          })
+        }
+      }
+      xhr.send(null)
+      // xhr.send('string');
+      // xhr.send(new Blob());
+      // xhr.send(new Int8Array());
+      // xhr.send(document);
+
+      //   xhr.onreadystatechange = function () {
+      //   onreadystatechange 属性
+      //     // 4.1 监听 xhr 对象的请求状态 readyState ；与服务器响应的状态 status
+      //     if (xhr.readyState === 4 && xhr.status === 200) {
+      //       // 4.2 打印服务器响应回来的数据
+      //       console.log(xhr.responseText)
+      //     }
+      //   }
+
+      //   post请求
+      /* var xhr = new XMLHttpRequest()
+      xhr.open("POST", "http://www.liulongbin.top:3006/api/addbook", true)
+
+      //发送合适的请求头信息
+      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+      xhr.send("bookname=小江自传&author=小江&publisher=家里蹲出版社")
+      xhr.onload = function () {
+        // 请求结束后，在此处写处理代码
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          console.log(xhr.responseText)
+        }
+      } */
+      // xhr.send("bookname=水浒传呀&author=施耐庵1&publisher=天津图书出版社")
+      // xhr.send('string');
+      // xhr.send(new Blob());
+      // xhr.send(new Int8Array());
+      // xhr.send(document);
+    </script>
+  </body>
+</html>

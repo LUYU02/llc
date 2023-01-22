@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>轮播图进阶版</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      img {
+        vertical-align: top;
+      }
+
+      ul {
+        list-style: none;
+      }
+
+      .outer {
+        width: 640px;
+        height: 390px;
+        margin: 100px auto;
+        position: relative;
+      }
+      .img-list {
+        height: 390px;
+      }
+      .img-list li {
+        position: absolute;
+        opacity: 0;
+        transition: all 1s;
+      }
+
+      li.current {
+        z-index: 1;
+        opacity: 1;
+      }
+      /* 设置左右按钮 */
+      .prev-next a {
+        height: 60px;
+        font-size: 60px;
+        color: #fff;
+        font-weight: 800;
+        text-decoration: none;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        z-index: 2;
+        opacity: 0.5;
+      }
+      .prev-next a:hover {
+        opacity: 1;
+      }
+      #next {
+        right: 0;
+      }
+      /* 小点 */
+      .dot {
+        position: absolute;
+        z-index: 3;
+        left: 0;
+        right: 0;
+        bottom: 5px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+      }
+      .dot a {
+        float: left;
+        width: 20px;
+        height: 20px;
+        margin: 5px;
+        border-radius: 50%;
+        background-color: #fff;
+        opacity: 0.5;
+      }
+      .dot a:hover,
+      .dot .active {
+        opacity: 1;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="outer">
+      <ul class="img-list">
+        <li class="current">
+          <a href="#"><img src="./images/1.png" alt="" /></a>
+        </li>
+        <li>
+          <a href="#"><img src="./images/2.png" alt="" /></a>
+        </li>
+        <li>
+          <a href="#"><img src="./images/3.png" alt="" /></a>
+        </li>
+        <li>
+          <a href="#"><img src="./images/4.png" alt="" /></a>
+        </li>
+        <li>
+          <a href="#"><img src="./images/5.png" alt="" /></a>
+        </li>
+      </ul>
+      <!-- 添加左右按钮 -->
+      <div class="prev-next">
+        <a href="JavaScript:;" id="prev"><</a>
+        <a href="JavaScript:;" id="next">></a>
+      </div>
+      <!-- 添加小点 -->
+      <div class="dot">
+        <!-- <a href="JavaScript:;" class="active"></a>
+        <a href="JavaScript:;"></a>
+        <a href="JavaScript:;"></a>
+        <a href="JavaScript:;"></a>
+        <a href="JavaScript:;"></a> -->
+      </div>
+    </div>
+    <script>
+      /*
+            自动切换图片
+      */
+      //   定义一个变量存储定时器
+      /* ;(() => {
+        // 写立即执行函数是为了 timer 不会被外部访问 而改变timer的值
+        let timer = null
+        return (toggleChange = () => {
+          // 判断timer是否是null
+          if (timer === null) {
+            timer = setTimeout(
+              (auto = () => {
+                changeImg("next")
+                // 循环调用
+                timer = setTimeout(auto, 1000)
+              }),
+              1000
+            )
+          } else {
+            clearTimeout(timer)
+            timer = null
+          }
+        })
+      })() */
+      const toggleChange = (() => {
+        // 写立即执行函数是为了 timer 不会被外部访问 而改变timer的值
+        let timer = null
+        return () => {
+          // 判断timer是否是null
+          if (timer === null) {
+            timer = setTimeout(
+              (auto = () => {
+                changeImg("next")
+                // 循环调用
+                timer = setTimeout(auto, 1000)
+              }),
+              1000
+            )
+          } else {
+            clearTimeout(timer)
+            timer = null
+          }
+        }
+      })()
+      toggleChange()
+      //  获取轮播图的盒子
+      const outer = document.querySelector(".outer")
+      // 自动生成小圆圈
+      const imgs = document.querySelectorAll("li")
+      for (let i = 0; i < imgs.length; i++) {
+        const a = document.createElement("a")
+        if (i === 0) {
+          outer
+            .querySelector(".dot")
+            .insertAdjacentHTML(
+              "beforeend",
+              `<a href="JavaScript:;" class="active"></a>`
+            )
+        } else {
+          outer
+            .querySelector(".dot")
+            .insertAdjacentHTML("beforeend", `<a href="JavaScript:;"></a>`)
+        }
+      }
+
+      // 获取小圆圈
+      const yqs = Array.from(document.querySelectorAll(".dot a"))
+      document.addEventListener("click", (e) => {
+        const index = yqs.indexOf(e.target)
+        if (index !== -1) {
+          changeImg(index)
+        }
+      })
+      //   for (let i = 0; i < yqs.length; i++) {
+      //     yqs[i].addEventListener("click", () => {
+      //       // 当前的active元素
+      //       const currentActive = document.querySelector(".active")
+      //     })
+      //   }
+      // 鼠标 经过 轮播图的盒子则不自动播放
+      outer.addEventListener("mouseenter", () => {
+        toggleChange()
+      })
+      // 鼠标 离开 轮播图的盒子则不自动播放
+      outer.addEventListener("mouseleave", () => {
+        toggleChange()
+      })
+      //   点击按钮切换图片 左和右
+      const prev = document.getElementById("prev")
+      const next = document.getElementById("next")
+      prev.addEventListener("click", () => {
+        changeImg("prev")
+      })
+      next.addEventListener("click", () => {
+        changeImg("next")
+      })
+      // 图片切换的函数
+      function changeImg(dir) {
+        // 获取当前显示的图片
+        const current = document.getElementsByClassName("current")[0]
+        // 当前图片的数组
+        const imgArr = Array.from(document.querySelectorAll(".img-list li"))
+        // 获取下一张图片
+        let next
+        if (dir === "next") {
+          next = current.nextElementSibling || imgArr[0]
+        } else if (dir === "prev") {
+          next = current.previousElementSibling || imgArr.at(-1) //imgArr[imgArr.length - 1]
+        } else {
+          next = imgArr[dir]
+        }
+        // 获取要显示的图片的索引
+        const index = imgArr.indexOf(next)
+        // 切换显示状态 先移除 后显示
+        current.classList.remove("current")
+        next.classList.add("current")
+
+        // 2.切换active 小圆点样式
+        const currentActive = document.querySelector(".active")
+        currentActive.classList.remove("active")
+        // 获取当前要显示的小点
+        yqs[index].classList.add("active")
+      }
+    </script>
+  </body>
+</html>

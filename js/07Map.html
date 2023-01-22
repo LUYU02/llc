@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const obj2 = {}
+        const obj = {
+            name: "小江",
+            age: 20,
+            [obj2]: "嘻嘻",
+            [Symbol()]: "哈哈"
+        }
+        console.log(obj[{}]);
+        const map = new Map()
+        map.set(obj2, "heihei")
+        map.set("name", "小江")
+        map.set(NaN, "不是数值")
+        console.log(map, map.size);
+        console.log(map.get({}));
+        console.log(map.get("name"));
+        console.log(map.has("nan1"));
+        map.clear()
+        console.log(map);
+        console.log("------------");
+        const map1 = new Map()
+        map1.set("name", "小江")
+        map1.set("age", 20)
+        map1.set({}, "对象")
+        // const arr = Array.from(map)
+        const arr = [...map1]
+        console.log(arr) //[["name","小江"],["age",20],[{},"对象"]]
+        console.log(arr[2][0]);
+
+        const map2 = new Map([["name", "小江"], ["age", 20], [["1", 2], () => console.log("你好!")]])
+        console.log(map2)
+        let arr1 = [...map2]
+        const fu = arr1[2][1]
+        fu()
+        console.log(arr1[2][1])
+        console.log("-----------------")
+        // 遍历
+        for (const entry of map2) {
+            console.log(entry);
+            for (const entry1 of entry) {
+                console.log(entry1);
+                if (entry1[0] == true) {
+                    for (const entry2 of entry1) {
+                        console.log(entry2);
+                    }
+                }
+            }
+        }
+        for (const [key, value] of map2) {
+            console.log(key, value)
+        }
+        map2.forEach((v, k) => {
+            console.log(k, v);
+        })
+    </script>
+</body>
+
+</html>

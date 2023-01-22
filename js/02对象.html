@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class ly {
+            constructor(name) {
+                this.name = "小江"
+            }
+        }
+        class luyu extends ly {
+            constructor(name) {
+                super(name)
+            }
+            sayHello() {
+                console.log("我在飞");
+            }
+
+        }
+        const luyu1 = new luyu()
+        const luyu2 = new luyu()
+
+        console.log(luyu1);
+        console.log(luyu2);
+        console.log(Object.hasOwn(luyu1.__proto__, "sayHello"));
+        console.log(luyu1 instanceof luyu);
+        console.log(luyu1 instanceof ly);
+        console.log(luyu1 instanceof Object);
+
+
+        // 构造函数写 旧方法 
+        function Fu(name, age) {
+            this.name = name
+            this.age = age
+            // this.say = function () {
+            //     console.log("你好");
+            // }
+        }
+        // 添加方法
+        Fu.prototype.sayHello = function () {
+            console.log(this.name);
+        }
+        // 添加静态属性和方法
+        Fu.staticProperty = "静态属性"
+        Fu.staticMethod = function () {
+            console.log("我是静态方法");
+        }
+        const f = new Fu("小江", 20)
+        console.log(f);
+        f.sayHello()
+        Fu.staticMethod()
+        console.log(Fu.staticProperty);
+
+        // 旧的写法的  继承 
+        var Animal = (function () {
+            function Animal() {
+
+            }
+            return Animal
+        })()
+
+        var Cat = (function () {
+            function Cat(name) {
+                this.name = name
+            }
+
+            // 继承
+            Cat.prototype = new Animal()
+            return Cat
+        })()
+        let cat = new Cat("小江")
+        console.log(cat);
+        console.log(cat instanceof Cat);
+        console.log(cat instanceof Animal);
+
+        let c1 = new Cat()
+        let c2 = new Cat()
+
+        Cat.prototype.xj = () => {
+            console.log("我是修改原型的方法!");
+        }
+        Cat.prototype.sx = "我是属性"
+    </script>
+</body>
+
+</html>

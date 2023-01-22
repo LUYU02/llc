@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            for-of 语句可以用来遍历可迭代对象
+                语法:
+                    for (变量 of 可迭代对象){
+                        语句...
+                    } 
+        */
+        /* 
+            非破坏性方法
+
+            at()获取数组的元素 可以为负数(倒着来看)
+
+            concat() 连接两个数组 不是破坏性
+
+            indexOf() 获取元素第一次出现的索引 找不到则返回-1 
+
+            lastIndexOf 获取元素第一次出现的索引 找不到则返回-1 (倒着找)
+
+            join() 指定一个字符作为连接符
+
+            slice() 用来截取数组 截取位置和截取到哪[) 没有参数则对数组进行浅拷贝
+
+            高阶函数
+            filter() 浅拷贝
+                将数组的元素保存到一个新的数组中返回
+                需要一个回调函数作为参数 会为每一个元素调用回调函数 并根据返回值来决定是否将元素添加到新的数组中 
+                回调函数的三个参数
+                    element 当前元素
+                    index 当前元素的索引
+                    array 被遍历的数组
+            
+            map()
+                根据当前数组生成一个新数组
+                需要一个回调函数作为参数:
+                    element 当前元素
+                    index 当前元素的索引
+                    array 被遍历的数组
+                    回调函数的返回值会成为新数组中的元素
+
+            reduce()
+                可以用来将一个数组中的所有元素整合为一个值
+                参数:
+                    1．回调函数，通过回调函数来指定合并的规则
+                    2．可选参数，初始值
+
+            破坏性 方法-------------------------------------------------------------
+
+            push() 在最后添加一个或者多个元素
+
+            pop() 删除最后一个元素 返回被删除的值
+
+            unshift 在前面添加一个或者多个元素
+
+            shift() 删除前面的一个元素 返回被删除值
+
+            splice() 
+                可以删除 插入 替换 数组的元素
+                参数:
+                    删除的起始位置
+                    删除的数量
+                    要插入的元素
+                返回值:
+                    返回被删除的元素
+            
+            reverse() 翻转数组 (不用传入参数)
+
+            高阶函数
+            sort()
+                默认安卓UnUnicode编码进行排序 先转为字符串在排序
+                参数 
+                    传一个回调函数作为参数 指定排序规则
+                    arr.sort((a,b)=>{a-b}) 升序 数字
+                    arr.sort((a,b)=>{a-b}) 降序 数字
+            
+            forEach()
+                遍历数组
+                他需要一个回调函数作为参数
+                回调函数的三个参数
+                    element 当前元素
+                    index 当前元素的索引
+                    array 被遍历的数组
+
+            
+        */
+        const arr = ["孙悟空", "猪八戒", "沙和尚", "唐僧", "1"]
+
+        const zz = arr.map(ele => `<span>${ele}</span>`)
+        console.log(zz);
+        document.write(zz)
+        // arr.forEach((element, index, array) => {
+        //     console.log("元素:" + element, "索引:" + index, "被遍历的数组:" + array);
+        // })
+
+        const arr1 = [7, 9, 10, 9]
+        const z12 = arr1.reduce((a, b) => {
+            console.log(a, b);
+            /* 
+                a=7
+                b=9
+
+                a=16
+                b=10
+                ...
+
+                a=前面两个值的和
+                b=a的后面一个值
+            */
+            return a + b
+        })
+        console.log(z12, arr1);
+
+        let result1 = arr1.filter((ele, i) => ele % 2 === 0 && i % 2 === 0)
+        console.log(result1);
+        for (const value of arr) {
+            document.write(value + `<br\>`)
+        }
+        console.log(arr.at(1));
+        console.log(arr.concat(arr1, [99, 101]));
+        console.log(arr.indexOf(5));
+        console.log(arr.join("-"));
+        let arr3 = arr.slice()
+        arr3[0] = "1"
+        console.log(arr3 === arr);
+        console.log(arr[0] === arr3[0]);
+
+        // 删除
+        // let result = arr.splice(1, 3)
+        // 替换
+        // let result = arr.splice(1, 1, "天蓬元帅")
+        // 插入
+        let result = arr.splice(1, 0, "牛魔王")
+        console.log(result);
+        console.log(arr);
+        console.log(arr.reverse());
+
+
+        let arr4 = [101, 100, 1, 2, 3, 1, 2, 3, 1, 2, 1, 3, 4, 4, 90, 6, 6, 5, 7, 7, 90, 80, 60, 50, 5, 5, 50, 50, 40, 40, 40, 90, 80, 100]
+        /*     for (let i = 0; i < arr4.length; i++) {
+                for (let j = i + 1; j < arr4.length; j++) {
+                    if (arr4[i] === arr4[j]) {
+                        arr4.splice(j, 1)
+                        j--
+                    }
+                }
+            } */
+        /*  for (let i = 0; i < arr4.length; i++) {
+             const index = arr4.indexOf(arr4[i], i + 1)
+             if (index !== -1) {
+                 arr.splice(index, 1)
+                 i--
+             }
+         } */
+        //  去重
+        let newArr = []
+        for (const ele of arr4) {
+            if (newArr.indexOf(ele) === -1) {
+                newArr.push(ele)
+            }
+        }
+        console.log(newArr);
+        // 冒泡排序
+        /* for (let j = 0; j < newArr.length - 1; j++) {
+            for (let i = 0; i < newArr.length - 1 - j; i++) {
+                if (newArr[i] > newArr[i + 1]) {
+                    let temp
+                    temp = newArr[i + 1]
+                    newArr[i + 1] = newArr[i]
+                    newArr[i] = temp
+                 //   [newArr[i],newArr[i+1]]=[newArr[i+1],newArr[i]]
+                }
+            }
+        } */
+        // 选择排序 破坏性
+        // for (let i = 0; i < newArr.length - 1; i++) {
+        //     for (let j = i + 1; j < newArr.length; j++) {
+        //         if (newArr[i] > newArr[j]) {
+        //             let temp = newArr[i]
+        //             newArr[i] = newArr[j]
+        //             newArr[j] = temp
+        //         }
+        //     }
+        // }
+        // console.log(newArr);
+
+        /*
+        // 封装函数 非破坏性
+        function fu(array) {
+            const newArr=[...array]
+            for (let i = 0; i < newArr.length - 1; i++) {
+                for (let j = i + 1; j < newArr.length; j++) {
+                    if (newArr[i] > newArr[j]) {
+                        let temp = newArr[i]
+                        newArr[i] = newArr[j]
+                        newArr[j] = temp
+                    }
+                }
+            }
+            return newArr
+        }
+        fu(newArr)
+        console.log(fu(newArr)); */
+    </script>
+</body>
+
+</html>

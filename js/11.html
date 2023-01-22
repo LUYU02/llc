@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .z1 {
+            width: 500px;
+            height: 500px;
+            border-radius: 50px;
+            background-color: #bfa;
+            border: 10px red solid;
+        }
+
+        .zz {
+            width: 500px;
+            height: 500px;
+            background-color: pink;
+            border: 10px red solid;
+            padding: 50px;
+        }
+
+        #box1 {
+            width: 50px;
+            height: 50px;
+            background-color: #bfa;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        #box2 {
+            width: 500px;
+            height: 500px;
+            background-color: pink;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box1"></div>
+    <div id="box2"></div>
+    <!-- <div class="z1">1</div> -->
+    <!-- <a href="https://www.lilichao.com/">点我</a> -->
+    <script>
+        const box1 = document.querySelector("#box1")
+        const box2 = document.querySelector("#box2")
+        document.addEventListener("mousemove", function (e) {
+            box1.style.left = (e.x) + "px"
+            box1.style.top = (e.y) + "px"
+        })
+
+        box2.addEventListener("mousemove", function (e) {
+            e.stopPropagation()
+            includes()
+        })
+        // const inp = document.querySelector("button")
+        // const div = document.querySelector("div")
+        // const divObj = getComputedStyle(div)
+        // const a = document.querySelector("a")
+        // console.log(divObj)
+        // console.log(divObj.width)
+        // console.log(divObj.height)
+        // console.log(divObj.left)
+        // console.log(divObj.top)
+        // console.log(divObj.display)
+        // console.log(divObj.backgroundColor)
+        // div.style.display = "block"
+        // div.addEventListener("click", function (e) {
+        //     // div.className += " zz"
+        //     console.log(e)
+        //     console.log(e.width)
+        //     console.log(e.height)
+
+
+        // })
+        // a.addEventListener("click", function (e) {
+        //     e.preventDefault()
+        // })
+    </script>
+</body>
+
+</html>

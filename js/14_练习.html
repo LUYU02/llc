@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        .outer {
+            width: 400px;
+            margin: 100px auto;
+            text-align: center;
+        }
+
+        table {
+            width: 400px;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        td,
+        th {
+            border: 1px black solid;
+            padding: 10px 0;
+        }
+
+        form div {
+            margin: 10px 0;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            /* 
+                点击删除超链接后，删除当前的员工信息
+            */
+            // 获取所有删除的超链接元素
+            function fun1() {
+                const tr = this.parentNode.parentNode
+                // 获取tr第一个td的文本
+                const empName = tr.querySelector("td").innerText
+                if (confirm(`你确认要删除这么重要的数据嘛(${empName})!`)) {
+                    //confirm 返回布尔值
+                    tr.remove()
+                }
+            }
+            // 获取超链接
+            // const as = document.querySelectorAll(".outer tbody tr a") //不是实时更新
+            // const as = document.getElementsByTagName("a")
+            const as = document.links
+            console.log(as);
+            for (let i = 0; i < as.length; i++) {
+                as[i].onclick = fun1
+            }
+            // 添加员工
+            const tbody = document.querySelector("tbody")
+            const btn = document.querySelector(".outer form button")
+            btn.addEventListener("click", function () {
+                const formName = document.querySelector(".outer form div #name").value
+                const formEmail = document.querySelector(".outer form div #email").value
+                const formSalary = document.querySelector(".outer form div #salary").value
+                if (formName === "" || formEmail === "" || formSalary === "") {
+                    alert("请重新输入 你输入的内容为空")
+                } else {
+                    // 创建标签
+                    const tr = document.createElement("tr")
+                    const nameTd = document.createElement("td")
+                    const emailTd = document.createElement("td")
+                    const salaryTd = document.createElement("td")
+                    // 添加文本
+                    nameTd.innerText = formName
+                    emailTd.innerText = formEmail
+                    salaryTd.innerText = formSalary
+                    // 将td添加到tr
+                    tr.appendChild(nameTd)
+                    tr.appendChild(emailTd)
+                    tr.appendChild(salaryTd)
+                    tr.insertAdjacentHTML("beforeend", `<td><a href="javascript:;">删除</a></td>`)
+                    // 将tr添加到tbody中
+                    tbody.appendChild(tr)
+                }
+                // 为新添加的tr绑定删除事件
+                as[as.length - 1].onclick = fun1
+            })
+        })
+    </script>
+</head>
+
+<body>
+    <div class="outer">
+        <table>
+            <tbody>
+                <tr>
+                    <th>姓名</th>
+                    <th>邮件</th>
+                    <th>薪资</th>
+                    <th>操作</th>
+                </tr>
+                <tr>
+                    <td>孙悟空</td>
+                    <td>swk@hgs.com</td>
+                    <td>10000</td>
+                    <td><a href="javascript:;">删除</a></td>
+                </tr>
+                <tr>
+                    <td>猪八戒</td>
+                    <td>zbj@glz.com</td>
+                    <td>8000</td>
+                    <td><a href="javascript:;">删除</a></td>
+                </tr>
+                <tr>
+                    <td>沙和尚</td>
+                    <td>shs@lsh.com</td>
+                    <td>6000</td>
+                    <td><a href="javascript:;">删除</a></td>
+                </tr>
+            </tbody>
+        </table>
+        <form action="javascript:;">
+            <div>
+                <label for="name">姓名</label>
+                <input type="text" id="name" />
+            </div>
+            <div>
+                <label for="email">邮件</label>
+                <input type="email" id="email" />
+            </div>
+            <div>
+                <label for="salary">薪资</label>
+                <input type="number" id="salary" />
+            </div>
+            <button>添加</button>
+        </form>
+    </div>
+</body>
+
+</html>

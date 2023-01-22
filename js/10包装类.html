@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+
+    </script>
+</head>
+
+<body>
+    <a href="#">1</a>
+    <a href="JavaScript:;">2</a>
+    <a href="JavaScript:;">3</a>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <span>我是span</span>
+    <input type="text" name="" id="" value="1" data-Xj="456">
+    <input type="button" value="小江" onclick="alert('别点我')">
+    <script>
+        let span = document.querySelector("span")
+        span.textContent = "你好呀!"
+        console.log(span.textContent);
+        let inp = document.querySelector("input")
+        console.log(inp);
+        inp.dataset.Xj = "avhov"
+        console.log(inp.dataset.Xj);
+
+        document.documentElement //html根元素
+        console.log(document.documentElement);
+        let as = document.links //获取所有链接
+        for (let i = 0; i < as.length; i++) {
+            as[i].addEventListener("click", () => {
+                as[i].innerText = "你好"
+                console.log("1111111111111145487");
+            })
+        }
+        let divs1 = document.getElementsByTagName("div")
+        console.log(divs1);
+        let divs2 = document.querySelectorAll("div")
+        console.log(divs2);
+        const li = document.createElement("li")
+        li.textContent = "你好11111"
+        li.class = "luyu"
+        // document.body.appendChild(li)
+        document.body.insertAdjacentElement("beforebegin", li) //元素前面
+        document.body.insertAdjacentElement("afterend", li) //元素后面
+        document.body.insertAdjacentElement("afterbegin", li) //元素中前面
+        document.body.insertAdjacentElement("beforeend", li) //元素中后面
+        document.body.insertAdjacentHTML("afterbegin", "</br>")
+        document.body.insertAdjacentText("afterbegin", "nihao</br>")
+        inp.replaceWith(li)
+        inp.remove()
+    </script>
+</body>
+
+</html>

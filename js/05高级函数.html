@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function fu(arr, cb) {
+            const newArr = []
+            for (let i = 0; i < arr.length; i++) {
+                if (cb(arr[i])) {
+                    newArr.push(arr[i])
+                }
+            }
+            return newArr
+        }
+        const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        let result
+        result = fu(arr, a => a % 2 === 0)
+        console.log(result);
+
+        // 闭包
+        function fu1() {
+            let num = 0
+            return () => {
+                num++
+                console.log(num);
+            }
+        }
+        fu1()()
+        const zz = fu1()
+        zz()
+        zz()
+
+        // 递归函数 求阶乘
+        function fu2(num) {
+            if (num === 1) {
+                //退出条件 基线条件
+                return 1
+            }
+            // 递归条件
+            return fu2(num - 1) * num
+            /* 
+                return fu2(4)*5
+                    return fu2(3)*4
+                        return fu2(2)*3
+                            return fu2(1)*2
+                                return 1
+              return (((((1)*2)*3)*4)*5)
+            */
+        }
+        let diGui = fu2(5)
+        console.log(diGui)
+
+        // 循环 求阶乘
+        let sum = 1
+        for (let i = 2; i <= 5; i++) {
+            sum *= i
+        }
+        console.log(sum);
+
+        function fu3(n) {
+            if (n < 3) {
+                return 1
+            }
+            return fu3(n - 1) + fu3(n - 2)
+        }
+        fiGui = fu3(12)
+        console.log(fiGui);
+
+        function getFib(n) {
+            let n1 = 1;
+            let n2 = 1;
+            for (let i = 2; i < n; i++) {  // for (var i = 3; i <= n; i++) {
+                n3 = n1 + n2;
+                n1 = n2;
+                n2 = n3;
+            }
+            return n3;
+        }
+        let n = getFib(12);
+        console.log(n);
+
+    </script>
+</body>
+
+</html>

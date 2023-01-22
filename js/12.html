@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="num"></div>
+    <script>
+        // console.log(location.href)
+        // console.log(location.protocol)
+        // history.go(1)
+        const num1 = document.getElementById("num")
+        let num = 0
+        const t = setTimeout(() => {
+            console.log(1)
+        }, 1000);
+
+        num1.textContent = num
+        const l = setInterval(() => {
+            num++
+            num1.textContent = num
+            if (num === 200) {
+                alert("退出")
+                clearTimeout(l)
+                clearInterval()
+            }
+        }, 1);
+
+        clearTimeout()
+        clearInterval()
+    </script>
+</body>
+
+</html>

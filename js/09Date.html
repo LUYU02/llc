@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let date = new Date("2022-12-1 20:06:05")
+        let d = new Date()
+        // d = new Date(2002, 7, 15, 12, 8, 5)
+        // d = new Date(-28800000)
+        console.log(d);
+        console.log(d.getFullYear()) //年
+        console.log(d.getMonth()) //月 (0-11) 0为1月
+        console.log(d.getDate()) //日
+        console.log(d.getDay()) //周几(0-6) 0为周日
+        console.log(d.getTime())//时间戳 毫秒 1970年1月1日0时0分0秒
+        console.log(Date.now())
+
+        let result = d.toLocaleDateString() //将日期转为字符串
+        result = d.toLocaleTimeString() //将时间转为字符串
+        /* 
+            toLocaleString()    
+            参数:
+            描述国家信息的字符串
+            zh-CN 
+            zh-HK
+
+        */
+        result = d.toLocaleString("zh-CN", { year: "2-digit" }) //日期和时间都转为字符串
+        console.log(result);
+        document.write(result)
+        const obj = {
+            name: "小江",
+            age: 12,
+            zz: 12
+        }
+        let str = "mihao "
+        str = str.normalize
+        console.log(str);
+        console.log(Math.round(Math.random() * (100 - 50) + 50));
+    </script>
+</body>
+
+</html>
