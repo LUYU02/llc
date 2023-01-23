@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root">
+      <h1>请先登入再操作</h1>
+      <h2 id="info"></h2>
+      <form>
+        <span>用户名: <input type="text" name="u" id="u" /> </span>
+        <span> 密码:<input type="password" name="p" id="p" /></span>
+        <button id="login-btn" type="button">登入</button>
+      </form>
+    </div>
+    <script>
+      const loginBtn = document.querySelector("#login-btn")
+      const root = document.querySelector("#root")
+
+      loginBtn.addEventListener("click", () => {
+        const u = document.querySelector("#u").value
+        const p = document.querySelector("#p").value
+        fetch("http://127.0.0.1/login", {
+          method: "post",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            u,
+            p,
+          }),
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            if (res.status !== "ok") {
+              throw new Error("用户名或者密码错误")
+            }
+            // 登入成功处理
+            root.innerHTML = `<h1>欢迎${res.data.n}回来!</h1>`
+          })
+          .catch((err) => {
+            //登入失败处理
+            // console.log("出错了!")
+            document.querySelector("#info").innerText = "用户名或者密码错误"
+          })
+      })
+    </script>
+  </body>
+</html>

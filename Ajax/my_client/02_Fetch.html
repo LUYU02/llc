@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button>get</button>
+    <button>post</button>
+    <script>
+      /*
+        fetch
+            fetch是xhr的升级版，采用的是Promise API
+            作用和AJAX是一样的，但是使用起来更加友好
+            fetch原生js就支持的一种ajax请求的方式
+      */
+      const but = document.querySelectorAll("button")
+      //  Fetch  get 请求
+      but[0].addEventListener("click", () => {
+        fetch("http://127.0.0.1/students")
+          .then((res) => {
+            // 正确确定
+            if (res.status === 200) {
+              // 将res数据转为json格式 返回给下一个then
+              return res.json()
+            } else {
+              throw new Error("小江抛出一个错误!")
+              console.log("出错了")
+            }
+          })
+          .then((res) => {
+            // 获取数据后,将数据渲染到页面
+            if (res.status === "ok") {
+              for (const i of res.data) {
+                document.body.insertAdjacentHTML(
+                  "beforeend",
+                  `${i.id}+-+${i.name}+-+${i.age}+-+${i.gender}+-+${i.address}`
+                )
+              }
+            }
+          })
+          .catch((err) => console.log("服务器出错了 ", err))
+      })
+      //  Fetch  post 请求
+      but[1].addEventListener("click", () => {
+        fetch("http://127.0.0.1/students", {
+          method: "post",
+          headers: {
+            // application/x-www-form-urlencoded
+            "content-type": "application/json",
+          },
+          //  通过body去发送数据时，必须通过请求头来指定数据的类型
+          body: JSON.stringify({
+            id: "6",
+            name: "小江",
+            age: 20,
+            gender: "男",
+            address: "江西",
+          }),
+        })
+          .then((res) => {
+            return res.json()
+          })
+          .then((res) => {
+            console.log(res.data)
+          })
+      })
+    </script>
+  </body>
+</html>

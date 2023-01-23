@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>小江的客户端</h1>
+    <button>get</button>
+    <button>post</button>
+    <button>put</button>
+    <button>delete</button>
+
+    <script>
+      const btn = document.querySelectorAll("button")
+      btn[0].addEventListener("click", () => {
+        // 创建一个xhr对象
+        const xhr = new XMLHttpRequest()
+        // 设置请求的信息
+        xhr.open("get", "http://127.0.0.1/students")
+        // 发送请求
+        xhr.send()
+        // 将 response 设置为json格式 会自动转为对象
+        xhr.responseType = "json"
+        // 加载完毕才打印出处理
+        xhr.addEventListener("load", () => {
+          // xhr.status 表示响应状态码
+          if (xhr.status === 200) {
+            // const obj = JSON.parse(xhr.response).data
+            // const obj = JSON.parse(xhr.responseText).data
+            // xhr.response表示响应信息
+            // console.log(xhr.responseText === xhr.response) //true
+
+            // 接受后台传过来的数据
+            const result = xhr.response
+            if (result.status === "ok") {
+              const ul = document.createElement("ul")
+              document.body.appendChild(ul)
+              for (let i of result.data) {
+                ul.insertAdjacentHTML(
+                  "beforeend",
+                  `<li>${i.id}+-+${i.name}+-+${i.age}+-+${i.gender}+-+${i.address}</li>`
+                )
+              }
+            }
+          }
+        })
+      })
+    </script>
+  </body>
+</html>
