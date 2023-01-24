@@ -27,7 +27,6 @@
               return res.json()
             } else {
               throw new Error("小江抛出一个错误!")
-              console.log("出错了")
             }
           })
           .then((res) => {
@@ -48,7 +47,7 @@
         fetch("http://127.0.0.1/students", {
           method: "post",
           headers: {
-            // application/x-www-form-urlencoded
+            // application/x-www-form-urlencoded  设置请求头的类型
             "content-type": "application/json",
           },
           //  通过body去发送数据时，必须通过请求头来指定数据的类型

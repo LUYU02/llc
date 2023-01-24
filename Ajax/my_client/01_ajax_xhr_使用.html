@@ -22,8 +22,8 @@
         xhr.open("get", "http://127.0.0.1/students")
         // 发送请求
         xhr.send()
-        // 将 response 设置为json格式 会自动转为对象
-        xhr.responseType = "json"
+        // 将 response 设置为json格式 将json的数据转为对象
+        // xhr.responseType = "json"
         // 加载完毕才打印出处理
         xhr.addEventListener("load", () => {
           // xhr.status 表示响应状态码
@@ -32,6 +32,8 @@
             // const obj = JSON.parse(xhr.responseText).data
             // xhr.response表示响应信息
             // console.log(xhr.responseText === xhr.response) //true
+            // console.log(typeof xhr.response)
+            // console.log(xhr.response)
 
             // 接受后台传过来的数据
             const result = xhr.response

@@ -17,34 +17,143 @@
       </form>
     </div>
     <script>
+      /* 问题：
+          - 现在是登录以后直接将用户信息存储到了localStorage
+          - 主要存在两个问题：
+              1.数据安全问题
+              2.服务器不知道你有没有登录
+          - 解决问题：
+            如何告诉服务器客户端的登录状态
+              - rest风格的服务器是无状态的服务器，所以注意不要在服务器中存储用户的数据
+              - 服务器中不能存储用户信息，可以将用户信息发送给客户端保存
+                  比如：{id:"xxx", username:"xxx", email:"xxx"}
+                  客户端每次访问服务器时，直接将用户信息发回，服务器就可以根据用户信息来识别用户的身份
+              - 但是如果将数据直接发送给客户端同样会有数据安全的问题，
+                  所以我们必须对数据进行加密，加密以后在发送给客户端保存，这样即可避免数据的泄露
+              - 在node中可以直接使用jsonwebtoken这个包来对数据进行加密
+                  jsonwebtoken（jwt） --> 通过对json加密后生成一个web中使用的令牌
+              - 使用步骤
+                //1.安装
+                //yarn add jsonwebtoken
+                //2.引入
+                //3.... */
+
       const loginBtn = document.querySelector("#login-btn")
       const root = document.querySelector("#root")
 
-      loginBtn.addEventListener("click", () => {
-        const u = document.querySelector("#u").value
-        const p = document.querySelector("#p").value
-        fetch("http://127.0.0.1/login", {
-          method: "post",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({
-            u,
-            p,
-          }),
+      // 加载数据的函数
+      function loadData() {
+        // 当我们访问的是需要权限的api时，必须在请求中附加权限的信息
+        // token一般都是通过请求头来发送
+        const token = localStorage.getItem("token")
+        fetch("http://127.0.0.1/students", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         })
-          .then((res) => res.json())
           .then((res) => {
-            if (res.status !== "ok") {
-              throw new Error("用户名或者密码错误")
+            // 正确确定
+            if (res.status === 200) {
+              // 将res数据转为json格式 返回给下一个then
+              return res.json()
+            } else {
+              throw new Error("小江抛出一个错误!")
             }
-            // 登入成功处理
-            root.innerHTML = `<h1>欢迎${res.data.n}回来!</h1>`
           })
-          .catch((err) => {
-            //登入失败处理
-            // console.log("出错了!")
-            document.querySelector("#info").innerText = "用户名或者密码错误"
+          .then((res) => {
+            // 获取数据后,将数据渲染到页面
+            if (res.status === "ok") {
+              const divData = document.querySelector("#data")
+              for (const i of res.data) {
+                divData.insertAdjacentHTML(
+                  "beforeend",
+                  `${i.id}+-+${i.name}+-+${i.age}+-+${i.gender}+-+${i.address}</br>`
+                )
+              }
+            }
           })
-      })
+          .catch((err) => console.log("服务器出错了 ", err))
+      }
+
+      // 登入成功后的处理
+      function loginFn(zz) {
+        // 登入成功处理
+        root.innerHTML = `
+              <h1>欢迎${zz}回来!</h1>
+              <hr>
+              <button id="zx-btn">注销</button>
+              <button id="load-btn" onclick="loadData()">加载数据</button>
+              <hr>
+              <div id="data" ></div>
+              `
+        const zcBtn = document.getElementById("zx-btn")
+        zcBtn.addEventListener("click", () => {
+          localStorage.clear()
+          history.go(0)
+        })
+      }
+      // 判断用户是否登入成功
+      if (localStorage.getItem("token")) {
+        // 用户已经登入
+        /* root.innerHTML = `
+        <h1>欢迎${localStorage.getItem("n")}回来!</h1>
+        <hr>
+        <button id="zx-btn">注销</button>
+        <button id="load-btn" onclick="loadData()">加载数据</button>
+        <hr>
+        <div id="data"></div>
+        `
+        const zcBtn = document.getElementById("zx-btn")
+        zcBtn.addEventListener("click", () => {
+          localStorage.clear()
+          history.go(0)
+        }) */
+        // 登入成功调用这个函数
+        loginFn(localStorage.getItem("n"))
+      } else {
+        loginBtn.addEventListener("click", () => {
+          const u = document.querySelector("#u").value.trim()
+          const p = document.querySelector("#p").value.trim()
+          fetch("http://127.0.0.1/login", {
+            method: "post",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({
+              u,
+              p,
+            }),
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              if (res.status !== "ok") {
+                throw new Error("用户名或者密码错误")
+              }
+              // 登录成功以后，需要保持用户的登录的状态，需要将用户的信息存储到某个地方
+              /*
+              所谓的本地存储就是指浏览器自身的存储空间，
+                可以将用户的数据存储到浏览器内部
+                sessionStorage 中存储的数据 页面一关闭就会丢失
+                localStorage 存储的时间比较长
+            */
+
+              // 登入成功后 存储到本地内存中
+              // 未加密版
+              // localStorage.setItem("u", res.data.u)
+              // localStorage.setItem("p", res.data.p)
+              // localStorage.setItem("n", res.data.n)
+              // 加密版
+              localStorage.setItem("token", res.data.token)
+              localStorage.setItem("n", res.data.n)
+
+              // 登入成功调用这个函数
+              loginFn(res.data.n)
+            })
+            .catch((err) => {
+              //登入失败处理
+              // console.log("出错了!")
+              document.querySelector("#info").innerText = "用户名或者密码错误"
+            })
+        })
+      }
     </script>
   </body>
 </html>

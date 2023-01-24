@@ -1,5 +1,15 @@
 const express = require("express")
 
+// 引入jwt
+/* 运行流程  
+    1.客户端给服务器发请求 
+    2.服务器生成koten再把token发给客户端 
+    3.客户端拿到token再将token保存然后把token发给服务器  
+    4.服务器在解析token
+    */
+
+const jwt = require("jsonwebtoken")
+
 const app = express()
 
 const STU_ARR = [
@@ -16,7 +26,7 @@ app.use((req, res, next) => {
   // 设置响应头
   res.setHeader("Access-Control-Allow-Origin", "*")
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,PATCH")
-  res.setHeader("Access-Control-Allow-Headers", "Content-type")
+  res.setHeader("Access-Control-Allow-Headers", "Content-type,Authorization")
   // Access-Control-Allow-Origin 设置指定值时只能设置一个
   // res.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500")
   // Access-Control-Allow-Methods 允许的请求的方式
@@ -29,13 +39,17 @@ app.post("/login", (req, res) => {
   // 获取用户的数据
   const { u, p } = req.body
   if (u === "小江" && p === "123") {
+    // 登入成功前 生成token
+    const token = jwt.sign({ d: "1", u: "小江", n: "超级管理员" }, "luyu", {
+      expiresIn: "1d",
+    })
+
     // 登入成功
     res.send({
       status: "ok",
       data: {
-        id: "1",
-        u: "小江",
-        n: "管理员",
+        token,
+        n: "超级管理员",
       },
     })
   } else {
@@ -47,12 +61,25 @@ app.post("/login", (req, res) => {
 })
 // 定义学生信息的路由
 app.get("/students", (req, res) => {
-  console.log("收到students的get请求")
-  // 返回学生信息
-  res.send({
-    status: "ok",
-    data: STU_ARR,
-  })
+  try {
+    // 这个路由必须在用户登录后才能访问  需要检查用户是否登录
+    // 读取请求头
+    const token = req.get("Authorization").split(" ")[1]
+    // 对token进行解码
+    const decodeToken = jwt.verify(token, "luyu")
+    // 解码成功后
+    // 返回学生信息
+    res.send({
+      status: "ok",
+      data: STU_ARR,
+    })
+  } catch (e) {
+    // console.log("出错了 无效token !" + e)
+    res.status(403).send({
+      status: "error",
+      data: "token无效",
+    })
+  }
 })
 
 // 查询某个学生的路由
@@ -76,7 +103,6 @@ app.get("/students/:id", (req, res) => {
 })
 // 定义一个添加学生的路由
 app.post("/students", (req, res) => {
-  console.log("收到students的post请求", req.body)
   // 获取学生的信息
   const { name, age, gender, address } = req.body
   // 将学生信息添加到数组
