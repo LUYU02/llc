@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button>发送请求</button>
+    <button>取消请求</button>
+    <button>fetch() 另一种写法</button>
+    <script>
+      const btn = document.querySelectorAll("button")
+      let controller
+      btn[0].addEventListener("click", () => {
+        // 创建一个AbortController 对象
+        controller = new AbortController()
+
+        fetch("http://127.0.0.1/test", {
+          // 把 controller 的signal 配置到 fetch中
+          signal: controller.signal,
+        })
+          .then((res) => console.log(res))
+          .catch((err) => {
+            console.log("出错了!")
+          })
+      })
+      btn[1].addEventListener("click", () => {
+        controller && controller.abort() // && 找false 第一个为false 则不看第二个
+      })
+
+      //   fetch() 另一种写法
+      btn[2].addEventListener("click", async () => {
+        try {
+          const res = await fetch("http://127.0.0.1/students")
+          const data = await res.json()
+          console.log(data)
+        } catch (e) {
+          console.log("出错了!" + e)
+        }
+      })
+    </script>
+  </body>
+</html>

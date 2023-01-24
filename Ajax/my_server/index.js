@@ -34,6 +34,9 @@ app.use((req, res, next) => {
   next()
 })
 
+// 终止请求的get请求
+app.get("/test", (req, res) => {})
+
 // 定义一个登入的路由
 app.post("/login", (req, res) => {
   // 获取用户的数据
@@ -61,6 +64,7 @@ app.post("/login", (req, res) => {
 })
 // 定义学生信息的路由
 app.get("/students", (req, res) => {
+  // 一般需要做成中间件
   try {
     // 这个路由必须在用户登录后才能访问  需要检查用户是否登录
     // 读取请求头
