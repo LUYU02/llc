@@ -8,8 +8,103 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
   <body>
+    <button>post</button>
+    <button>get</button>
+    <button>配置介绍</button>
+
     <script>
-      console.log(axios)
+      const btn = document.querySelectorAll("button")
+      axios.defaults.baseURL = "http://127.0.0.1"
+      btn[0].addEventListener("click", () => {
+        // axios(confirm)
+        axios({
+          method: "post",
+          url: "http://127.0.0.1/students",
+          data: {
+            name: "ly",
+            age: "11",
+            gender: "nan",
+            address: "小江国度",
+          },
+        })
+          .then((result) => {
+            console.log(result)
+          })
+          .catch((err) => {
+            console.log("出错了" + err)
+          })
+      })
+      btn[1].addEventListener("click", () => {
+        // axios(confirm)
+        axios({
+          method: "get",
+          url: "http://127.0.0.1/students",
+        })
+          .then((result) => {
+            // axios默认只会在响应状态为2xx时才会调用then
+            console.log(result)
+          })
+          .catch((err) => {
+            console.log("出错了" + err)
+          })
+      })
+      btn[2].addEventListener("click", () => {
+        // 直接调用axios发送请求
+        // axios(config)
+        axios({
+          // baseURL 指定服务器的根目录（路径的前缀）
+          baseURL: "http://localhost:3000",
+          // 请求地址
+          url: "test",
+
+          // 请求方法，默认是get
+          method: "get",
+
+          // 指定请求头
+          // headers:{"Content-type":"application/json"}
+
+          // 请求体
+          // data:"name=唐僧&age=16"
+          // data: {
+          //   name: "唐僧",
+          //   age: 18,
+          //   gender: "男",
+          //   address: "女儿国",
+          // },
+
+          // params 用来指定路径中的查询字符串
+          params: {
+            id: 1,
+            name: "swk",
+          },
+
+          //timeout 过期时间
+          timeout: 1000,
+
+          // 用来终止请求
+          // signal
+
+          // transformRequest 可以用来处理请求数据（data）
+          // 它需要一个数组作为参数，数组可以接收多个函数，请求发送时多个函数会按照顺序执行
+          // 函数在执行时，会接收到两个参数data和headers
+          // transformRequest:[function(data, headers){
+          //     // 可以在函数中对data和headers进行修改
+          //     data.name = "猪八戒"
+          //     headers["Content-Type"] = "application/json"
+          //     return data
+          // }, function(data, headers){
+          //     // 最后一个函数必须返回一个字符串，才能使得数据有效
+          //     return JSON.stringify(data)
+          // }]
+        })
+          .then((result) => {
+            // result是axios封装过
+            console.log(result.data)
+          })
+          .catch((err) => {
+            console.log("出错了！", err)
+          })
+      })
     </script>
   </body>
 </html>
